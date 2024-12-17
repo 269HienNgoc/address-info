@@ -77,6 +77,12 @@
     transition: background-color 0.3s;
   }
 
+  .noti p{
+    color: red;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 20px 10px;
+  }
 
   .submit-btn:hover , .hd-btn:hover {
     background-color: #0056b3;

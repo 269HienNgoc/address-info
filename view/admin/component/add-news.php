@@ -1,6 +1,7 @@
 </br>
 </br>
-<form class="form-container" action="<?php echo admin_url('admin.php?page=hd-add-province') ?>" method="post">
+<div class="noti"><p><?php echo $response ?></p></div>
+<form class="form-container" action="<?php echo admin_url('admin.php?page=hd-add-address') ?>" method="post">
   <div class="form-header">NHẬP THÔNG TIN ĐỊA CHỈ CHI NHÁNH</div>
   <div class="form-group">
     <label for="avatarAddress">Ảnh chinh nhánh</label>
@@ -33,5 +34,5 @@
     <label for="phone">Điện thoại</label>
     <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại...." required>
   </div>
-  <button type="submit" class="submit-btn">Lưu</button>
+  <button type="submit" name="submit-btn" class="submit-btn">Lưu</button>
 </form>
