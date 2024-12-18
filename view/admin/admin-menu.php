@@ -89,24 +89,27 @@ if (!class_exists('AdminMenu')) {
 
             $response = $this->mess;
 
+            $province = $this->GetValueProvince();
+
             ob_start();
-            require_once HDMC__PLUGIN_DIR . 'view/admin/component/add-news.php';
-            $the_content = ob_get_contents();
+            $the_contents = require_once HDMC__PLUGIN_DIR . 'view/admin/component/add-news.php';
+            $the_contents = ob_get_contents();
             ob_end_clean();
-            echo $the_content;
+            echo $the_contents;
         }
 
-        private function SaveAddress(){
+        private function SaveAddress()
+        {
             global $wpdb;
 
             $perfix  =  $wpdb->prefix;
 
-            if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_REQUEST['submit-btn']) ){
+            if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_REQUEST['submit-btn'])) {
                 //Sanitize
                 $avatar =   sanitize_text_field($_REQUEST['avatarAddress']) ?? '';
                 $nameAddress =   sanitize_text_field($_REQUEST['nameAddress']) ?? '';
                 $address_ =   sanitize_text_field($_REQUEST['address_']) ?? '';
-                // $province =   sanitize_text_field($_REQUEST['province']);
+                $province_id = isset($_REQUEST['province']) ? intval($_REQUEST['province']) : 0; 
                 $maps =   sanitize_text_field($_REQUEST['maps']) ?? '';
                 $phone =   sanitize_text_field($_REQUEST['phone']) ?? '';
 
@@ -115,21 +118,69 @@ if (!class_exists('AdminMenu')) {
                     'address_line' => $address_,
                     'img_url' => $avatar,
                     'phone' => $phone,
-                    'province_id' => 1,
+                    'province_id' => $province_id,
                 ]);
 
                 $address_id = $wpdb->insert_id;
 
-                if($address_id > 0){
+                if ($address_id > 0) {
                     $this->mess = "Thêm thành công...";
-                }else{
+                } else {
                     $this->mess = "Tạo thất bại...";
                 }
             }
         }
         public function CreateNewProvice()
         {
-            require_once HDMC__PLUGIN_DIR . 'view/admin/component/category-province.php';
+            $this->SaveProvince();
+
+            $response = $this->mess;
+
+            ob_start();
+            $the_content = require_once HDMC__PLUGIN_DIR . 'view/admin/component/category-province.php';
+            $the_content = ob_get_contents();
+            ob_end_clean();
+            echo $the_content;
+        }
+
+        private function SaveProvince()
+        {
+            global $wpdb;
+            $perfix  =  $wpdb->prefix;
+
+            if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset($_REQUEST["submit-btn-province"])) {
+
+                $nameProvince = sanitize_text_field($_REQUEST['nameProvince']) ?? '';
+                
+                if (empty($nameProvince) || $nameProvince == '') {
+                    $this->mess = "Tên Tỉnh Thành/Thành Phố không được để trống";
+                    return;
+                }
+
+                try {
+                    $wpdb->insert("{$perfix}hd_province", [
+                        'province_name' => $nameProvince,
+                    ]);
+    
+                    $province_id = $wpdb->insert_id;
+    
+                    if ($province_id > 0) {
+                        $this->mess = "Thêm thành công...";
+                    } else {
+                        $this->mess = "Thêm không thành công...";
+                    }
+
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $this->mess = "Error when insert data: " . $th->getMessage();
+                }
+            }
+        }
+
+        private function GetValueProvince(){
+            global $wpdb;
+            $results = $wpdb->get_results("SELECT id, province_name FROM {$wpdb->prefix}hd_province");
+            return $results;
         }
 
         public function RegisterScript($hook)

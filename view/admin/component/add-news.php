@@ -1,6 +1,6 @@
 </br>
 </br>
-<div class="noti"><p><?php echo $response ?></p></div>
+<div class="noti"><p><?php echo $response ?? '' ?></p></div>
 <form class="form-container" action="<?php echo admin_url('admin.php?page=hd-add-address') ?>" method="post">
   <div class="form-header">NHẬP THÔNG TIN ĐỊA CHỈ CHI NHÁNH</div>
   <div class="form-group">
@@ -20,10 +20,10 @@
   <div class="form-group">
     <label for="province">Thành phố</label>
     <select id="province" name="province" required>
-      <option value="default">Chọn thành phố</option>
-      <option value="floor">Floor</option>
-      <option value="wall">Wall</option>
-      <option value="roof">Roof</option>
+      <option>Chọn thành phố</option>
+      <?php foreach($province as $val){ ?>
+      <option value="<?= $val->id ?>"><?= $val->province_name ?></option>
+      <?php } ?>
     </select>
   </div>
   <div class="form-group">
