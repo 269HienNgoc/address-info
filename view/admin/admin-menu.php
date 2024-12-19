@@ -77,7 +77,11 @@ if (!class_exists('AdminMenu')) {
          */
         public function CreateInterfaceAdmin()
         {
-            require_once HDMC__PLUGIN_DIR . 'view/admin/component/list-table.php';
+            ob_start();
+            require_once HDMC__PLUGIN_DIR . 'view/admin/component/view-table.php';
+            $the_contents = ob_get_contents();
+            ob_end_clean();
+            echo $the_contents;
         }
         /**
          * Summary of CreateNewCustomer
@@ -92,7 +96,7 @@ if (!class_exists('AdminMenu')) {
             $province = $this->GetValueProvince();
 
             ob_start();
-            $the_contents = require_once HDMC__PLUGIN_DIR . 'view/admin/component/add-news.php';
+            require_once HDMC__PLUGIN_DIR . 'view/admin/component/add-news.php';
             $the_contents = ob_get_contents();
             ob_end_clean();
             echo $the_contents;
@@ -137,7 +141,7 @@ if (!class_exists('AdminMenu')) {
             $response = $this->mess;
 
             ob_start();
-            $the_content = require_once HDMC__PLUGIN_DIR . 'view/admin/component/category-province.php';
+            require_once HDMC__PLUGIN_DIR . 'view/admin/component/category-province.php';
             $the_content = ob_get_contents();
             ob_end_clean();
             echo $the_content;
