@@ -1,18 +1,18 @@
-<?php 
-if(!class_exists('List_table')){
+<?php
+if (!class_exists('List_table')) {
     include_once HDMC__PLUGIN_DIR . 'view/admin/component/list-table.php';
 }
-function my_list_table() {
-    $my_list_table = new List_table();
-    $my_list_table->prepare_items(); 
-    ?>
-        <div class="wrap">
-        <form id="my-list-table" method="get">
-            <?php 
-            $my_list_table->display(); 
-            ?>
-        </form>
-        </div>
-    <?php
-}
-my_list_table();
+$my_list_table = new List_table();
+$my_list_table->prepare_items();
+?>
+<div class="title"><h1>QUẢN LÝ KHÁCH HÀNG - THỜI GIAN BẢO HÀNH</h1></div>
+<div class="wrap">
+    <form id="my-list-table" action="<?php echo admin_url('admin.php?page=hd-manager-address') ?>" method="post">
+        <input type="hidden" name="page" value="list-books">
+
+        <?php $my_list_table->search_box("Tìm Kiếm", "search_") ?>
+
+        <?php $my_list_table->display(); ?>
+
+    </form>
+</div>
